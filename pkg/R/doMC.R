@@ -113,8 +113,15 @@ doMC <- function(obj, expr, envir, data) {
     }
   }
 
+  # define the "worker" function, compiling expr if possible
+  FUN <- if (suppressWarnings(require('compiler', quietly=TRUE))) {
+    c.expr <- compile(expr, env=envir, options=list(suppressUndefined=TRUE))
+    function(args) tryCatch(eval(c.expr, envir=args, enclos=envir), error=function(e) e)
+  } else {
+    function(args) tryCatch(eval(expr, envir=args, enclos=envir), error=function(e) e)
+  }
+
   # execute the tasks
-  FUN <- function(args) tryCatch(eval(expr, envir=args, enclos=envir), error=function(e) e)
   results <- mclapply(argsList, FUN, mc.preschedule=preschedule,
                       mc.set.seed=set.seed, mc.silent=silent,
                       mc.cores=cores)
