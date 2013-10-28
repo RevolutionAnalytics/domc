@@ -1,2 +1,2 @@
 export(registerDoMC)
-import(foreach, iterators, parallel)
+import(foreach, iterators, parallel, utils)
