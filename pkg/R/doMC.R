@@ -45,7 +45,7 @@ registerDoMC <- function(cores=NULL, ...) {
   rm(list=old.optnames, pos=.options)
 
   # set new options
-  for (i in seq(along=opts)) {
+  for (i in seq_along(opts)) {
     assign(optnames[i], opts[[i]], pos=.options)
   }
 
@@ -189,7 +189,7 @@ doMC <- function(obj, expr, envir, data) {
   }
 
   # call the accumulator with all of the results
-  tryCatch(accumulator(results, seq(along=results)), error=function(e) {
+  tryCatch(accumulator(results, seq_along(results)), error=function(e) {
     cat('error calling combine function:\n')
     print(e)
     NULL
